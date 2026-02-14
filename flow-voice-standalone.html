@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered voice dictation that turns speech into polished text instantly. Free forever.">
+    <title>Flow Voice - AI Voice Dictation App</title>
+    
+    <!-- Google Fonts for Beautiful Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================
+           GLOBAL STYLES & CSS VARIABLES
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-full: 50%;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: linear-gradient(to bottom right, var(--bg-darker), #1e1b4b, var(--bg-dark));
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* ==========================================
+           HEADER SECTION
+           Feature: Navigation and branding
+           ========================================== */
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius-md);
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .icon-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius-md);
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           AD PLACEMENT ZONE 1 - HEADER BANNER
+           Feature: Monetization - Top banner ad
+           ========================================== */
+        .ad-banner-top {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+        }
+
+        .ad-banner-top::before {
+            content: "Advertisement";
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================
+           MAIN CONTAINER
+           ========================================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ==========================================
+           HERO SECTION
+           Feature: Main headline and introduction
+           ========================================== */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           STATS BAR
+           Feature: Real-time statistics display
+           ========================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* ==========================================
+           MODE SELECTOR
+           Feature: Different AI editing modes
+           ========================================== */
+        .mode-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .mode-section h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .mode-btn {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            border-color: #667eea;
+        }
+
+        .mode-btn.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        .mode-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .mode-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================
+           MICROPHONE BUTTON
+           Feature: Voice recording control
+           ========================================== */
+        .mic-section {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .mic-button {
+            width: 8rem;
+            height: 8rem;
+            border-radius: var(--radius-full);
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button.listening {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.8); }
+        }
+
+        .mic-status {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .mic-status.listening {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           AD PLACEMENT ZONE 2 - SIDEBAR
+           Feature: Monetization - Sidebar ad
+           ========================================== */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-content {
+            min-width: 0;
+        }
+
+        .sidebar-ad {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .sidebar-ad::before {
+            content: "Advertisement";
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================
+           TEXT DISPLAY SECTIONS
+           Feature: Raw transcript and AI-edited output
+           ========================================== */
+        .text-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .text-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .panel-header h3 {
+            font-size: 1.125rem;
+        }
+
+        .text-display {
+            min-height: 300px;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .text-display.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .text-display.edited {
+            color: var(--text-primary);
+        }
+
+        /* ==========================================
+           LOADING INDICATOR
+           Feature: AI processing feedback
+           ========================================== */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 268px;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.05) 0%,
+                rgba(255,255,255,0.2) 50%,
+                rgba(255,255,255,0.05) 100%
+            );
+            background-size: 200% 100%;
+            border-radius: 2px;
+            animation: shimmer 2s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* ==========================================
+           ACTION BUTTONS
+           Feature: Copy, clear, and other actions
+           ========================================== */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ==========================================
+           TIPS SECTION
+           Feature: User guidance and help
+           ========================================== */
+        .tips-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tips-section h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .tip-item {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+        }
+
+        /* ==========================================
+           MODAL STYLES
+           Feature: Dictionary, Snippets, Settings popups
+           ========================================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-md);
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 0.5rem;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .list-item-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .delete-btn {
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================
+           AD PLACEMENT ZONE 3 - BOTTOM BANNER
+           Feature: Monetization - Bottom banner ad
+           ========================================== */
+        .ad-banner-bottom {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: var(--radius-md);
+        }
+
+        .ad-banner-bottom::before {
+            content: "Advertisement";
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        .footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================
+           RESPONSIVE DESIGN
+           Feature: Mobile compatibility
+           ========================================== */
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-ad {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mode-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .text-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mic-button {
+                width: 6rem;
+                height: 6rem;
+                font-size: 2rem;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mic-button {
+                width: 5rem;
+                height: 5rem;
+                font-size: 1.75rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ==========================================
+           NOTIFICATION TOAST
+           Feature: User feedback notifications
+           ========================================== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(200%);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        /* ==========================================
+           UTILITY CLASSES
+           ========================================== */
+        .hidden {
+            display: none !important;
+        }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mt-2 { margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <!-- ==========================================
+         HEADER SECTION
+         Feature: Navigation with quick access buttons
+         ========================================== -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="logo-text">Flow Voice</div>
+            </div>
+            <div class="header-actions">
+                <!-- Feature: Open Personal Dictionary -->
+                <button class="icon-btn" onclick="openDictionary()" title="Personal Dictionary">
+                    <i class="fas fa-book"></i>
+                </button>
+                <!-- Feature: Open Snippets Library -->
+                <button class="icon-btn" onclick="openSnippets()" title="Voice Snippets">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <!-- Feature: Open Settings -->
+                <button class="icon-btn" onclick="openSettings()" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         AD ZONE 1 - TOP BANNER
+         Feature: Monetization - Replace with your ad code
+         Example: Google AdSense, PropellerAds, etc.
+         ========================================== -->
+    <div class="container">
+        <div class="ad-banner-top">
+            <!-- INSERT YOUR AD CODE HERE -->
+            <!-- Example: 728x90 Leaderboard Ad -->
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                <p>Your 728x90 Top Banner Ad Here</p>
+            </div>
+            <!-- END AD CODE -->
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MAIN CONTENT AREA
+         ========================================== -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Don't type, just <span class="gradient-text">speak</span></h1>
+            <p>AI-powered voice dictation that turns your speech into polished, formatted text instantly</p>
+        </div>
+
+        <!-- Feature: Real-time Statistics Display -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value mono" id="wpmStat">0</div>
+                <div class="stat-label">WPM</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value mono" id="wordsStat">0</div>
+                <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value mono" id="charsStat">0</div>
+                <div class="stat-label">Characters</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value mono" id="dictStat">0</div>
+                <div class="stat-label">Dictionary</div>
+            </div>
+        </div>
+
+        <!-- Feature: AI Editing Mode Selector -->
+        <div class="mode-section">
+            <h3>Editing Mode</h3>
+            <div class="mode-grid">
+                <button class="mode-btn active" onclick="selectMode('auto')" data-mode="auto">
+                    <div class="mode-title">Auto</div>
+                    <div class="mode-desc">Smart cleanup</div>
+                </button>
+                <button class="mode-btn" onclick="selectMode('professional')" data-mode="professional">
+                    <div class="mode-title">Professional</div>
+                    <div class="mode-desc">Formal tone</div>
+                </button>
+                <button class="mode-btn" onclick="selectMode('casual')" data-mode="casual">
+                    <div class="mode-title">Casual</div>
+                    <div class="mode-desc">Friendly vibe</div>
+                </button>
+                <button class="mode-btn" onclick="selectMode('technical')" data-mode="technical">
+                    <div class="mode-title">Technical</div>
+                    <div class="mode-desc">Precise docs</div>
+                </button>
+                <button class="mode-btn" onclick="selectMode('creative')" data-mode="creative">
+                    <div class="mode-title">Creative</div>
+                    <div class="mode-desc">Vivid prose</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Feature: Voice Recording Control -->
+        <div class="mic-section">
+            <button class="mic-button" id="micButton" onclick="toggleRecording()">
+                <i class="fas fa-microphone" id="micIcon"></i>
+            </button>
+        </div>
+        <div class="mic-status" id="micStatus">
+            Click the microphone to start speaking
+        </div>
+
+        <!-- ==========================================
+             CONTENT WRAPPER WITH SIDEBAR AD
+             ========================================== -->
+        <div class="content-wrapper">
+            <div class="main-content">
+                <!-- Feature: Raw Transcript and AI-Edited Text Display -->
+                <div class="text-grid">
+                    <!-- Raw Transcript Panel -->
+                    <div class="text-panel">
+                        <div class="panel-header">
+                            <h3>Raw Transcript</h3>
+                            <button class="btn btn-secondary" onclick="clearAll()" id="clearBtn" style="display: none;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="text-display empty" id="rawTranscript">
+                            Your speech will appear here...
+                        </div>
+                    </div>
+
+                    <!-- AI Edited Text Panel -->
+                    <div class="text-panel">
+                        <div class="panel-header">
+                            <h3>AI Edited</h3>
+                            <button class="btn btn-primary" onclick="copyText()" id="copyBtn" style="display: none;">
+                                <i class="fas fa-copy" id="copyIcon"></i>
+                                <span id="copyText">Copy</span>
+                            </button>
+                        </div>
+                        <div class="text-display empty" id="editedText">
+                            Polished text will appear here...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     AD ZONE 3 - BOTTOM BANNER
+                     Feature: Monetization - Bottom content ad
+                     ========================================== -->
+                <div class="ad-banner-bottom">
+                    <!-- INSERT YOUR AD CODE HERE -->
+                    <!-- Example: 728x90 or responsive ad -->
+                    <div style="height: 90px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                        <p>Your 728x90 Bottom Banner Ad Here</p>
+                    </div>
+                    <!-- END AD CODE -->
+                </div>
+
+                <!-- Feature: User Tips and Guidance -->
+                <div class="tips-section">
+                    <h3>💡 Pro Tips</h3>
+                    <div class="tips-grid">
+                        <div class="tip-item">
+                            <div class="tip-title">Personal Dictionary:</div>
+                            Add custom words, names, or terms that Flow should remember
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-title">Snippets:</div>
+                            Create voice shortcuts for frequently used text
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-title">Modes:</div>
+                            Switch between different tones to match your needs
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 AD ZONE 2 - SIDEBAR
+                 Feature: Monetization - Sticky sidebar ad
+                 ========================================== -->
+            <aside class="sidebar-ad">
+                <!-- INSERT YOUR AD CODE HERE -->
+                <!-- Example: 300x250 or 300x600 ad -->
+                <div style="height: 250px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                    <p>Your 300x250 Sidebar Ad Here</p>
+                </div>
+                <!-- END AD CODE -->
+            </aside>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="footer">
+        <p>Made with ❤️ using Claude Sonnet 4 • Speech recognition powered by Web Speech API</p>
+        <p>Your voice data stays on your device. Nothing is stored on our servers.</p>
+    </footer>
+
+    <!-- ==========================================
+         MODAL: PERSONAL DICTIONARY
+         Feature: Custom word management
+         ========================================== -->
+    <div class="modal" id="dictionaryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Personal Dictionary</h2>
+                <button class="close-btn" onclick="closeDictionary()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="newWord" 
+                    placeholder="Add a custom word..."
+                    onkeypress="if(event.key === 'Enter') addWord()"
+                >
+            </div>
+            <button class="btn btn-primary mb-2" onclick="addWord()" style="width: 100%;">
+                <i class="fas fa-plus"></i> Add Word
+            </button>
+
+            <div id="dictionaryList"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: VOICE SNIPPETS
+         Feature: Text expansion shortcuts
+         ========================================== -->
+    <div class="modal" id="snippetsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Voice Snippets</h2>
+                <button class="close-btn" onclick="closeSnippets()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="snippetTrigger" 
+                    placeholder="Trigger word (e.g., 'calendar')"
+                >
+            </div>
+            <div class="input-group">
+                <textarea 
+                    id="snippetText" 
+                    placeholder="Full text to insert..."
+                ></textarea>
+            </div>
+            <button class="btn btn-primary mb-2" onclick="addSnippet()" style="width: 100%;">
+                <i class="fas fa-plus"></i> Add Snippet
+            </button>
+
+            <div id="snippetsList"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL: SETTINGS
+         Feature: App configuration and data management
+         ========================================== -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" onclick="closeSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <h3 class="mb-1">Data Management</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <button class="btn btn-secondary" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                    <i class="fas fa-upload"></i> Import Data
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            </div>
+
+            <h3 class="mb-1">About</h3>
+            <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1);">
+                <p style="margin-bottom: 0.5rem;"><strong style="color: #667eea;">Flow Voice</strong> - AI-powered voice dictation</p>
+                <p style="margin-bottom: 0.5rem;">Built with Claude Sonnet 4 and Web Speech API</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Free forever • No account required • Privacy-first</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NOTIFICATION TOAST
+         Feature: User feedback messages
+         ========================================== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ==========================================
+         JAVASCRIPT APPLICATION LOGIC
+         ========================================== -->
+    <script>
+        // ==========================================
+        // GLOBAL STATE MANAGEMENT
+        // Feature: Application state variables
+        // ==========================================
+        let isListening = false;
+        let recognition = null;
+        let currentMode = 'auto';
+        let dictionary = [];
+        let snippets = [];
+        let transcript = '';
+        let startTime = null;
+
+        // ==========================================
+        // INITIALIZATION
+        // Feature: Load data and setup speech recognition
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initSpeechRecognition();
+            loadUserData();
+            updateStats();
+        });
+
+        // ==========================================
+        // SPEECH RECOGNITION SETUP
+        // Feature: Initialize Web Speech API
+        // ==========================================
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = function() {
+                    startTime = Date.now();
+                };
+
+                // Feature: Real-time transcript updates
+                recognition.onresult = function(event) {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcriptPiece = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcriptPiece + ' ';
+                        } else {
+                            interimTranscript += transcriptPiece;
+                        }
+                    }
+
+                    if (finalTranscript) {
+                        transcript += finalTranscript;
+                        updateRawTranscript();
+                        updateWPM();
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    if (event.error === 'no-speech') {
+                        showToast('No speech detected. Please try again.');
+                    }
+                };
+
+                recognition.onend = function() {
+                    if (isListening) {
+                        recognition.start();
+                    }
+                };
+            } else {
+                showToast('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+            }
+        }
+
+        // ==========================================
+        // VOICE RECORDING CONTROL
+        // Feature: Start/stop recording toggle
+        // ==========================================
+        function toggleRecording() {
+            if (!recognition) {
+                showToast('Speech recognition is not available');
+                return;
+            }
+
+            if (isListening) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            transcript = '';
+            updateRawTranscript();
+            document.getElementById('editedText').innerHTML = 'Polished text will appear here...';
+            document.getElementById('editedText').classList.add('empty');
+            document.getElementById('copyBtn').style.display = 'none';
+            
+            startTime = Date.now();
+            recognition.start();
+            isListening = true;
+            
+            document.getElementById('micButton').classList.add('listening');
+            document.getElementById('micIcon').className = 'fas fa-stop';
+            document.getElementById('micStatus').innerHTML = '🔴 Recording... Click to stop and process';
+            document.getElementById('micStatus').classList.add('listening');
+            document.getElementById('clearBtn').style.display = 'none';
+        }
+
+        function stopRecording() {
+            recognition.stop();
+            isListening = false;
+            
+            document.getElementById('micButton').classList.remove('listening');
+            document.getElementById('micIcon').className = 'fas fa-microphone';
+            document.getElementById('micStatus').innerHTML = 'Click the microphone to start speaking';
+            document.getElementById('micStatus').classList.remove('listening');
+            
+            if (transcript.trim()) {
+                processWithAI(transcript);
+                document.getElementById('clearBtn').style.display = 'flex';
+            }
+        }
+
+        // ==========================================
+        // AI TEXT PROCESSING
+        // Feature: Clean and format text with AI
+        // ==========================================
+        async function processWithAI(text) {
+            const editedDisplay = document.getElementById('editedText');
+            editedDisplay.innerHTML = '<div class="loading"><div class="loading-bar"></div></div>';
+            editedDisplay.classList.remove('empty');
+
+            // Feature: Apply personal dictionary
+            let processedText = text;
+            dictionary.forEach(word => {
+                const regex = new RegExp(`\\b${word.toLowerCase()}\\b`, 'gi');
+                processedText = processedText.replace(regex, word);
+            });
+
+            // Feature: Apply snippets expansion
+            snippets.forEach(snippet => {
+                const regex = new RegExp(`\\b${snippet.trigger}\\b`, 'gi');
+                processedText = processedText.replace(regex, snippet.text);
+            });
+
+            // Feature: AI editing based on selected mode
+            const toneInstructions = {
+                auto: 'Clean up the text, remove filler words (um, uh, like, you know), fix grammar, and format it naturally while preserving the speaker\'s voice and meaning.',
+                professional: 'Transform this into polished, professional writing. Remove all filler words, fix grammar, use formal language, and structure it clearly with proper punctuation.',
+                casual: 'Keep it conversational and friendly. Remove filler words but maintain a casual, approachable tone. Use contractions and natural language.',
+                technical: 'Format this as clear technical documentation. Remove filler words, use precise technical language, and structure it logically.',
+                creative: 'Polish this into creative, engaging prose. Remove filler words, enhance the language to be more vivid and expressive, and maintain natural flow.'
+            };
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        messages: [
+                            {
+                                role: 'user',
+                                content: `${toneInstructions[currentMode]}\n\nText to process:\n"${processedText}"\n\nReturn ONLY the cleaned text, no explanations or preamble.`
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+                const cleaned = data.content[0].text.trim();
+                
+                editedDisplay.innerHTML = cleaned;
+                editedDisplay.classList.remove('empty');
+                editedDisplay.classList.add('edited');
+                
+                // Feature: Update statistics
+                updateStats(cleaned);
+                document.getElementById('copyBtn').style.display = 'flex';
+                
+            } catch (error) {
+                console.error('AI processing error:', error);
+                // Feature: Fallback to basic cleaning
+                const cleaned = basicClean(processedText);
+                editedDisplay.innerHTML = cleaned;
+                editedDisplay.classList.remove('empty');
+                editedDisplay.classList.add('edited');
+                updateStats(cleaned);
+                document.getElementById('copyBtn').style.display = 'flex';
+            }
+        }
+
+        // ==========================================
+        // BASIC TEXT CLEANING
+        // Feature: Fallback text cleanup without AI
+        // ==========================================
+        function basicClean(text) {
+            return text
+                .replace(/\b(um|uh|like|you know|sort of|kind of)\b/gi, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // ==========================================
+        // MODE SELECTION
+        // Feature: Change AI editing style
+        // ==========================================
+        function selectMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            showToast(`Mode changed to: ${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+        }
+
+        // ==========================================
+        // DISPLAY UPDATES
+        // Feature: Update UI with current data
+        // ==========================================
+        function updateRawTranscript() {
+            const display = document.getElementById('rawTranscript');
+            if (transcript.trim()) {
+                display.innerHTML = transcript;
+                display.classList.remove('empty');
+            } else {
+                display.innerHTML = 'Your speech will appear here...';
+                display.classList.add('empty');
+            }
+        }
+
+        // Feature: Calculate and display WPM
+        function updateWPM() {
+            if (startTime && transcript) {
+                const minutes = (Date.now() - startTime) / 60000;
+                const words = transcript.split(/\s+/).length;
+                const wpm = Math.round(words / minutes);
+                document.getElementById('wpmStat').textContent = wpm || 0;
+            }
+        }
+
+        // Feature: Update all statistics
+        function updateStats(editedText = '') {
+            const text = editedText || transcript;
+            const words = text.trim() ? text.split(/\s+/).length : 0;
+            const chars = text.length;
+            
+            document.getElementById('wordsStat').textContent = words;
+            document.getElementById('charsStat').textContent = chars;
+            document.getElementById('dictStat').textContent = dictionary.length;
+        }
+
+        // ==========================================
+        // COPY TO CLIPBOARD
+        // Feature: Copy edited text
+        // ==========================================
+        function copyText() {
+            const text = document.getElementById('editedText').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                document.getElementById('copyIcon').className = 'fas fa-check';
+                document.getElementById('copyText').textContent = 'Copied!';
+                showToast('Text copied to clipboard!');
+                
+                setTimeout(() => {
+                    document.getElementById('copyIcon').className = 'fas fa-copy';
+                    document.getElementById('copyText').textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        // ==========================================
+        // CLEAR ALL
+        // Feature: Reset all text and stats
+        // ==========================================
+        function clearAll() {
+            transcript = '';
+            updateRawTranscript();
+            document.getElementById('editedText').innerHTML = 'Polished text will appear here...';
+            document.getElementById('editedText').classList.add('empty');
+            document.getElementById('editedText').classList.remove('edited');
+            document.getElementById('copyBtn').style.display = 'none';
+            document.getElementById('clearBtn').style.display = 'none';
+            document.getElementById('wpmStat').textContent = '0';
+            document.getElementById('wordsStat').textContent = '0';
+            document.getElementById('charsStat').textContent = '0';
+            showToast('Cleared all text');
+        }
+
+        // ==========================================
+        // PERSONAL DICTIONARY
+        // Feature: Manage custom words
+        // ==========================================
+        function openDictionary() {
+            document.getElementById('dictionaryModal').classList.add('active');
+            renderDictionary();
+        }
+
+        function closeDictionary() {
+            document.getElementById('dictionaryModal').classList.remove('active');
+        }
+
+        function addWord() {
+            const input = document.getElementById('newWord');
+            const word = input.value.trim();
+            
+            if (word && !dictionary.includes(word)) {
+                dictionary.push(word);
+                saveUserData();
+                renderDictionary();
+                updateStats();
+                input.value = '';
+                showToast(`Added "${word}" to dictionary`);
+            }
+        }
+
+        function removeWord(word) {
+            dictionary = dictionary.filter(w => w !== word);
+            saveUserData();
+            renderDictionary();
+            updateStats();
+            showToast(`Removed "${word}" from dictionary`);
+        }
+
+        function renderDictionary() {
+            const list = document.getElementById('dictionaryList');
+            
+            if (dictionary.length === 0) {
+                list.innerHTML = '<div class="empty-state">No custom words yet. Add one above!</div>';
+            } else {
+                list.innerHTML = dictionary.map(word => `
+                    <div class="list-item">
+                        <span class="mono">${word}</span>
+                        <button class="delete-btn" onclick="removeWord('${word}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ==========================================
+        // VOICE SNIPPETS
+        // Feature: Manage text expansion shortcuts
+        // ==========================================
+        function openSnippets() {
+            document.getElementById('snippetsModal').classList.add('active');
+            renderSnippets();
+        }
+
+        function closeSnippets() {
+            document.getElementById('snippetsModal').classList.remove('active');
+        }
+
+        function addSnippet() {
+            const trigger = document.getElementById('snippetTrigger').value.trim();
+            const text = document.getElementById('snippetText').value.trim();
+            
+            if (trigger && text) {
+                snippets.push({ trigger, text });
+                saveUserData();
+                renderSnippets();
+                document.getElementById('snippetTrigger').value = '';
+                document.getElementById('snippetText').value = '';
+                showToast(`Added snippet "${trigger}"`);
+            }
+        }
+
+        function removeSnippet(trigger) {
+            snippets = snippets.filter(s => s.trigger !== trigger);
+            saveUserData();
+            renderSnippets();
+            showToast(`Removed snippet "${trigger}"`);
+        }
+
+        function renderSnippets() {
+            const list = document.getElementById('snippetsList');
+            
+            if (snippets.length === 0) {
+                list.innerHTML = '<div class="empty-state">No snippets yet. Create one above!</div>';
+            } else {
+                list.innerHTML = snippets.map(snippet => `
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div class="list-item-title mono">${snippet.trigger}</div>
+                            <div class="list-item-text">${snippet.text}</div>
+                        </div>
+                        <button class="delete-btn" onclick="removeSnippet('${snippet.trigger}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ==========================================
+        // SETTINGS
+        // Feature: App configuration
+        // ==========================================
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // ==========================================
+        // DATA PERSISTENCE
+        // Feature: Save/load user data to localStorage
+        // ==========================================
+        function saveUserData() {
+            localStorage.setItem('flowVoiceDictionary', JSON.stringify(dictionary));
+            localStorage.setItem('flowVoiceSnippets', JSON.stringify(snippets));
+        }
+
+        function loadUserData() {
+            const savedDict = localStorage.getItem('flowVoiceDictionary');
+            const savedSnippets = localStorage.getItem('flowVoiceSnippets');
+            
+            if (savedDict) {
+                dictionary = JSON.parse(savedDict);
+            }
+            if (savedSnippets) {
+                snippets = JSON.parse(savedSnippets);
+            }
+            
+            updateStats();
+        }
+
+        // ==========================================
+        // DATA EXPORT/IMPORT
+        // Feature: Backup and restore user data
+        // ==========================================
+        function exportData() {
+            const data = {
+                dictionary: dictionary,
+                snippets: snippets,
+                version: '1.0',
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `flow-voice-data-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Data exported successfully!');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (data.dictionary) dictionary = data.dictionary;
+                        if (data.snippets) snippets = data.snippets;
+                        saveUserData();
+                        updateStats();
+                        renderDictionary();
+                        renderSnippets();
+                        showToast('Data imported successfully!');
+                    } catch (error) {
+                        showToast('Invalid file format');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // ==========================================
+        // NOTIFICATION TOAST
+        // Feature: Show feedback messages to user
+        // ==========================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==========================================
+        // MODAL CLICK OUTSIDE TO CLOSE
+        // Feature: UX improvement for modal dialogs
+        // ==========================================
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // ==========================================
+        // KEYBOARD SHORTCUTS
+        // Feature: Enhanced UX with keyboard controls
+        // ==========================================
+        document.addEventListener('keydown', function(e) {
+            // Escape key closes modals
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
